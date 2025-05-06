@@ -57,9 +57,40 @@ public class CalculatorTests
 
 # NUnit 생명주기
 
-`FixtureLifeCyclce`은 `TestFixture`의 생명주기를 지정할 수 있는 어트리뷰트로 2가지 방식이 있다.
+`FixtureLifeCyclce`은 `TestFixture`의 생명주기를 지정할 수 있는 어트리뷰트로 2가지 방식을 설정할 수 있다.
 
-* `LifeCycle.SingleInstance`: 하나의 인스턴스만 생성하여 전체 테스트 케이스에 공유된다.
-* `LifeCycle.InstancePerTestCase`:
+* `LifeCycle.SingleInstance`: 하나의 인스턴스만 생성하여 전체 테스트 케이스에 공유된다. **기본값**
+* `LifeCycle.InstancePerTestCase`: 각 테스트 케이스마다 새 인스턴스를 생성한다.
+
+아래의 예시는 SingleInstance로 설정하면 실패하고 InstancePerTestCase로 설정하면 성공하는 테스트를 확인할 수 있다.
+
+```C#
+[TestFixture]
+[FixtureLifeCycle(LifeCycle.InstancePerTestCase)] // 성공
+//[FixtureLifeCycle(LifeCycle.SingleInstance)] // 실패
+public class LifeCycleTests
+{
+    int number = 0;
+
+    [Test]
+    public void Test1()
+    {
+        // 다른 테스트에서 number의 값이 변경되면 실패한다
+        Assert.That(number, Is.EqualTo(0));
+
+        number = 1;
+    }
+
+    [Test]
+    public void Test2()
+    {
+        // 다른 테스트에서 number의 값이 변경되면 실패한다
+        Assert.That(number, Is.EqualTo(0));
+
+        number = 1;
+    }
+}
+```
+
 
 ## 
