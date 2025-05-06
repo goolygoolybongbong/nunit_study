@@ -93,4 +93,31 @@ public class LifeCycleTests
 ```
 
 
-## 
+# SetUpFixture
+
+`[SetUpFixture]`는 NUnit에서 특정 namespace나 어셈블리 단위로 테스트 실행 전후에 초기화 및 정리 작업을 수행할 때 사용하는 특수 클래스 어트리뷰트이다. 일반적으로 `[Setup]`과 `[TearDown]`은 **각 테스트 클래스**(`[TestFixture]`)에 적용되지만, `[SetUpFixture]`는 더 상위 범위에서 사용된다. 보통 테스트 클래스들이 실행되기 전/후에 공통적으로 수행할 초기화 및 해체 작업을 정의힌디. 예를 들면 데이터베이스 연결 설정, 공통 리소스 초기화, 파일 정리 등을 수행할 때 사용힌디.
+
+(여기서 말하는 어셈블리란 프로젝트가 빌드 결과물인 .dll 또는 .exe를 말함)
+
+```C#
+namespace HelloWorld
+{
+    [SetUpFixture]
+    public class MySetUpClass
+    {
+        [OneTimeSetUp]
+        public void RunBeforeAnyTests()
+        {
+            // ...
+        }
+
+        [OneTimeTearDown]
+        public void RunAfterAnyTests()
+        {
+            // ...
+        }
+    }
+}
+```
+
+# AutoFixture
